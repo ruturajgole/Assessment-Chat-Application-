@@ -15,6 +15,7 @@ describe("Bug Fix: Sending Messages", () => {
   it("setup", () => {
     cy.signup(alice.username, alice.email, alice.password);
     cy.logout();
+    cy.wait();
     cy.signup(bob.username, bob.email, bob.password);
     cy.logout();
   });
