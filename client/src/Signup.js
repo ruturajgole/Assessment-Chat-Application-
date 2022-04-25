@@ -98,7 +98,6 @@ const Signup = ({ user, register }) => {
                 </FormHelperText>
               </FormControl>
             </Grid>
-            <Button hidden>Logout</Button>
             <Button type="submit" variant="contained" size="large">
               Create
             </Button>
