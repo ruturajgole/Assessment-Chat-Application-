@@ -40,7 +40,7 @@ const ActiveChat = ({
 
       readMessage({
         id: conversation.id,
-        lastMessageSeen: messages[messages.length - 1].senderId != user.id
+        lastMessageSeen: messages.length && messages[messages.length - 1].senderId != user.id
       });
     }
   }, [activeConversation, conversation && conversation.messages])
