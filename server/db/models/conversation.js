@@ -1,8 +1,14 @@
-const { Op } = require("sequelize");
+const { Op, BOOLEAN } = require("sequelize");
 const db = require("../db");
 const Message = require("./message");
 
-const Conversation = db.define("conversation", {});
+const Conversation = db.define("conversation", {
+  lastMessageSeen: {
+    type: BOOLEAN,
+    allowNull: false,
+    defaultValue: false,
+  },
+});
 
 // find conversation given two user Ids
 

@@ -18,7 +18,7 @@ router.get("/", async (req, res, next) => {
           user2Id: userId,
         },
       },
-      attributes: ["id"],
+      attributes: ["id", "lastMessageSeen"],
       order: [[Message, "createdAt", "DESC"]],
       include: [
         { model: Message, order: ["createdAt", "DESC"] },
@@ -78,5 +78,22 @@ router.get("/", async (req, res, next) => {
     next(error);
   }
 });
+
+// expects {recipientId, text, conversationId } in body (conversationId will be null if no conversation exists yet)
+router.post("/", async (req, res, next) => {
+  try {
+    if (!req.user) {
+      return res.sendStatus(401);
+    }
+
+    const { id, lastMessageSeen } = req.body;
+
+    Conversation.update({lastMessageSeen}, {where: {id}});
+    res.json({ id, lastMessageSeen });
+  } catch (error) {
+    next(error);
+  }
+});
+
 
 module.exports = router;
