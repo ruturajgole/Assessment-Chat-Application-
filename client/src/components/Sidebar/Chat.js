@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box } from '@material-ui/core';
+import { Box, Typography } from '@material-ui/core';
 import { BadgeAvatar, ChatContent } from '../Sidebar';
 import { makeStyles } from '@material-ui/core/styles';
 
@@ -15,11 +15,34 @@ const useStyles = makeStyles((theme) => ({
       cursor: 'grab',
     },
   },
+  messagesCounter: {
+    fontSize: 12,
+    backgroundColor: "lightblue",
+    padding: "0px 10px",
+    borderRadius: "10px",
+    fontWeight: "bolder",
+  },
 }));
 
 const Chat = ({ conversation, setActiveChat }) => {
   const classes = useStyles();
-  const { otherUser } = conversation;
+  const { otherUser, messages } = conversation;
+
+  let oldMessage = true;  
+  const unreadCount = messages.reduce((acc, value) => {
+    if((!conversation.lastMessageSeen ||
+        value.text === conversation.lastMessageSeen) &&
+        oldMessage){
+      oldMessage = false;
+    }
+
+    if(oldMessage){
+      return acc;
+    }
+
+    return (value.senderId === otherUser.id
+      && value.text !== conversation.lastMessageSeen) ? (acc + 1) : 0;
+  }, 0);  
 
   const handleClick = async (conversation) => {
     await setActiveChat(conversation.otherUser.username);
@@ -34,6 +57,10 @@ const Chat = ({ conversation, setActiveChat }) => {
         sidebar={true}
       />
       <ChatContent conversation={conversation} />
+      {!!unreadCount && (<Typography 
+        className={classes.messagesCounter}>
+            {unreadCount}
+      </Typography>)}
     </Box>
   );
 };

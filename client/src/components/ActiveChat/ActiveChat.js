@@ -35,12 +35,16 @@ const ActiveChat = ({
     : {};
 
   useEffect(() => {
-    if(conversation && !conversation.lastMessageSeen){
+    if(conversation &&
+       conversation.messages.length &&
+       conversation.lastMessageSeen !== conversation.messages[conversation.messages.length - 1] &&
+       conversation.messages[conversation.messages.length - 1].senderId !== user.id){
+
       const { messages } = conversation;
 
       readMessage({
         id: conversation.id,
-        lastMessageSeen: messages.length && messages[messages.length - 1].senderId != user.id
+        lastMessageSeen: (messages[messages.length - 1].text)
       });
     }
   }, [activeConversation, conversation && conversation.messages])

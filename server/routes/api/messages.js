@@ -34,8 +34,6 @@ router.post("/", async (req, res, next) => {
       if (onlineUsers.includes(sender.id)) {
         sender.online = true;
       }
-    } else {
-      await conversation.update({lastMessageSeen: false});
     }
     
     const message = await Message.create({

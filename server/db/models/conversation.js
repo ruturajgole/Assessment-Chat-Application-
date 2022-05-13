@@ -1,12 +1,12 @@
-const { Op, BOOLEAN } = require("sequelize");
+const { Op, STRING } = require("sequelize");
 const db = require("../db");
 const Message = require("./message");
 
 const Conversation = db.define("conversation", {
   lastMessageSeen: {
-    type: BOOLEAN,
-    allowNull: false,
-    defaultValue: false,
+    type: STRING,
+    allowNull: true,
+    defaultValue: null,
   },
 });
 

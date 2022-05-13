@@ -13,18 +13,30 @@ const useStyles = makeStyles((theme) => ({
     fontWeight: "bold",
     letterSpacing: -0.2,
   },
+  message: {
+    display: "flex",
+    justifyContent: "space-between",
+  },
   previewText: {
     fontSize: 12,
     color: "#9CADC8",
     letterSpacing: -0.17,
   },
+  unreadText: {
+    fontSize: 12,
+    fontWeight: "bolder",
+    color: "black",
+    letterSpacing: -0.17,
+  }
 }));
 
 const ChatContent = ({ conversation }) => {
   const classes = useStyles();
-
-  const { otherUser } = conversation;
+  const { otherUser, messages } = conversation;
   const latestMessageText = conversation.id && conversation.latestMessageText;
+  const lastMessageSeen = (
+    messages[messages.length - 1].senderId === otherUser.id &&
+    conversation.lastMessageSeen !== latestMessageText);
 
   return (
     <Box className={classes.root}>
@@ -32,7 +44,8 @@ const ChatContent = ({ conversation }) => {
         <Typography className={classes.username}>
           {otherUser.username}
         </Typography>
-        <Typography className={classes.previewText}>
+        <Typography 
+          className={!lastMessageSeen ? classes.previewText : classes.unreadText}>
           {latestMessageText}
         </Typography>
       </Box>

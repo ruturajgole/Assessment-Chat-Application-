@@ -79,8 +79,7 @@ router.get("/", async (req, res, next) => {
   }
 });
 
-// expects {recipientId, text, conversationId } in body (conversationId will be null if no conversation exists yet)
-router.post("/", async (req, res, next) => {
+router.put("/", async (req, res, next) => {
   try {
     if (!req.user) {
       return res.sendStatus(401);
@@ -91,6 +90,7 @@ router.post("/", async (req, res, next) => {
     Conversation.update({lastMessageSeen}, {where: {id}});
     res.json({ id, lastMessageSeen });
   } catch (error) {
+    console.log("ERROR", error);
     next(error);
   }
 });
