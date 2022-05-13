@@ -47,9 +47,8 @@ io.on("connection", (socket) => {
     });
   });
 
-  socket.on("read-message", (data) => {
-    console.log(data);
-    socket.broadcast.emit("read-message", {
+  socket.on("last-seen", (data) => {
+    socket.broadcast.emit("last-seen", {
       id: data.id,
       lastMessageSeen: data.lastMessageSeen,
     });

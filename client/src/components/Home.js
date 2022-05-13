@@ -63,14 +63,14 @@ const Home = ({ user, logout }) => {
   };
 
   const setReadReceipt = async (body) => {
-    const { data } = await axios.post('/api/conversations', body);
+    const { data } = await axios.put('/api/conversations', body);
     return data;
   };
 
   const readMessage = async (body) => {
     try {
       const data = await setReadReceipt(body);
-      socket.emit("read-message", {
+      socket.emit("last-seen", {
         id: data.id,
         lastMessageSeen: data.lastMessageSeen,
       });
@@ -148,7 +148,6 @@ const Home = ({ user, logout }) => {
           convoCopy.messages = [...convoCopy.messages, message];
           convoCopy.latestMessageText = message.text;
           convoCopy.id = message.conversationId;
-          convoCopy.lastMessageSeen = false;
           return convoCopy;
         } else {
           return convo;
@@ -197,7 +196,7 @@ const Home = ({ user, logout }) => {
     socket.on('add-online-user', addOnlineUser);
     socket.on('remove-offline-user', removeOfflineUser);
     socket.on('new-message', addMessageToConversation);
-    socket.on('read-message', updateReadReceipt);
+    socket.on('last-seen', updateReadReceipt);
 
     return () => {
       // before the component is destroyed
@@ -205,7 +204,7 @@ const Home = ({ user, logout }) => {
       socket.off('add-online-user', addOnlineUser);
       socket.off('remove-offline-user', removeOfflineUser);
       socket.off('new-message', addMessageToConversation);
-      socket.on('read-message', updateReadReceipt);
+      socket.on('last-seen', updateReadReceipt);
     };
   }, [addMessageToConversation, addOnlineUser, removeOfflineUser, updateReadReceipt, socket]);
 
