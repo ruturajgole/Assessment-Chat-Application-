@@ -25,6 +25,10 @@ const useStyles = makeStyles(() => ({
     background: '#F4F6FA',
     borderRadius: '10px 10px 0 10px',
   },
+  readReceipt: {
+    width: 20, 
+    height: 20,
+  }
 }));
 
 const SenderBubble = ({ time, text, otherUser }) => {
@@ -39,7 +43,7 @@ const SenderBubble = ({ time, text, otherUser }) => {
       {otherUser && <Avatar
           alt={otherUser.username}
           src={otherUser.photoUrl}
-          style={{ width: 20, height: 20  }}
+          className={classes.readReceipt}
         />}
     </Box>
   );
