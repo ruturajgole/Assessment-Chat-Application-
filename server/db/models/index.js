@@ -5,16 +5,11 @@ const Group = require("./group");
 
 // associations
 
-//User.hasMany(Conversation);
-//Conversation.belongsTo(User, { as: "user1" });
-//Conversation.belongsTo(User, { as: "user2" });
 Message.belongsTo(Conversation);
 Conversation.hasMany(Message);
 
-User.hasMany(Group);
-Conversation.hasMany(Group);
-Group.belongsTo(User, { as: "user" });
-Group.belongsTo(Conversation, { as: "conversation" });
+User.belongsToMany(Conversation, {through: Group});
+Conversation.belongsToMany(User, {through: Group});
 
 module.exports = {
   User,
