@@ -8,8 +8,8 @@ const Group = require("./group");
 Message.belongsTo(Conversation);
 Conversation.hasMany(Message);
 
-User.belongsToMany(Conversation, {through: Group});
-Conversation.belongsToMany(User, {through: Group});
+User.belongsToMany(Conversation, {through: Group, as: "conversations"});
+Conversation.belongsToMany(User, {through: Group, as: "users"});
 
 module.exports = {
   User,

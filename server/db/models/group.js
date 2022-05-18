@@ -4,14 +4,14 @@ const Conversation = require("./conversation");
 const User = require("./user");
 
 const Group = db.define("group", {
-    userId: {
+    user: {
         type: Sequelize.INTEGER,
         references: {
             model: User,
             key: "id"
         }
     },
-    conversationId: {
+    conversation: {
         type: Sequelize.INTEGER,
         references: {
             model: Conversation,
