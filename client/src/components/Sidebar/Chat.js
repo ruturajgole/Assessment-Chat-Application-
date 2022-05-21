@@ -19,7 +19,7 @@ const useStyles = makeStyles((theme) => ({
 
 const Chat = ({ conversation, setActiveChat }) => {
   const classes = useStyles();
-  const { otherUser, messages } = conversation;
+  const { messages } = conversation;
 
   let oldMessage = true;  
   const unreadCount = messages.reduce((acc, value) => {
@@ -33,22 +33,24 @@ const Chat = ({ conversation, setActiveChat }) => {
       return acc;
     }
 
-    return (value.senderId === otherUser.id
+    return (conversation.users.some((user) => user.id === value.senderId)
       && value.text !== conversation.lastMessageSeen) ? (acc + 1) : 0;
   }, 0);  
 
   const handleClick = async (conversation) => {
-    await setActiveChat(conversation.otherUser.username);
+    await setActiveChat(conversation.users[0].username);
   };
 
   return (
     <Box onClick={() => handleClick(conversation)} className={classes.root}>
+      {conversation.otherUsers.map((user) => 
       <BadgeAvatar
-        photoUrl={otherUser.photoUrl}
-        username={otherUser.username}
-        online={otherUser.online}
-        sidebar={true}
-      />
+        key={user.username}
+        photoUrl={user.photoUrl}
+        username={user.username}
+        online={user.online}
+        sidebar={user}
+      />)}
       <ChatContent conversation={conversation} />
       <Badge
         color={"primary"}

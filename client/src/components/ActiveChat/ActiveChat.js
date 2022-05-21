@@ -30,7 +30,7 @@ const ActiveChat = ({
 
   const conversation = conversations
     ? conversations.find(
-        (conversation) => conversation.otherUser.username === activeConversation
+        (conversation) => conversation.otherUsers.some((user) => user && user.username === activeConversation)
       )
     : {};
 
@@ -58,7 +58,7 @@ const ActiveChat = ({
       {isConversation(conversation) && conversation.otherUser && (
         <>
           <Header
-            username={conversation.otherUser.username}
+            username={conversation.users.reduce((acc, user, index) => index ? acc + ", " + user.username : user.username, "" )}
             online={conversation.otherUser.online || false}
           />
           <Box className={classes.chatContainer}>

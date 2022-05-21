@@ -32,20 +32,21 @@ const useStyles = makeStyles((theme) => ({
 
 const ChatContent = ({ conversation }) => {
   const classes = useStyles();
-  const { otherUser, messages } = conversation;
+  const { otherUsers, messages, users } = conversation;
   const latestMessageText = conversation.id && conversation.latestMessageText;
-  const lastMessageSeen = (
-    messages[messages.length - 1].senderId === otherUser.id &&
-    conversation.lastMessageSeen !== latestMessageText);
+  // const lastMessageSeen = (
+  //   messages[messages.length - 1].senderId === otherUser.id &&
+  //   conversation.lastMessageSeen !== latestMessageText);
 
   return (
     <Box className={classes.root}>
       <Box>
-        <Typography className={classes.username}>
-          {otherUser.username}
-        </Typography>
+       {otherUsers.map((user) => 
+        <Typography key={user.username} className={classes.username}>
+          {user.username}
+        </Typography>)}
         <Typography 
-          className={!lastMessageSeen ? classes.previewText : classes.unreadText}>
+          className={!true ? classes.previewText : classes.unreadText}>
           {latestMessageText}
         </Typography>
       </Box>

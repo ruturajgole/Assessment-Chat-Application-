@@ -34,13 +34,13 @@ const Sidebar = ({
       <Search handleChange={handleChange} />
       {conversations
         .filter((conversation) =>
-          conversation.otherUser.username.includes(searchTerm)
+          conversation.users.some((user) => user.username.includes(searchTerm))
         )
         .map((conversation) => {
           return (
             <Chat
               conversation={conversation}
-              key={conversation.otherUser.username}
+              key={conversation.otherUsers.reduce((acc, user) => user.username + acc, "")}
               setActiveChat={setActiveChat}
             />
           );
