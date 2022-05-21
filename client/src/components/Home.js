@@ -26,23 +26,23 @@ const Home = ({ user, logout }) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   const addSearchedUsers = (users) => {
-    const currentUsers = {};
+    // const currentUsers = {};
 
-    // make table of current users so we can lookup faster
-    conversations.forEach((convo) => {
-      currentUsers[convo.otherUser.id] = true;
-    });
+    // // make table of current users so we can lookup faster
+    // conversations.forEach((convo) => {
+    //   currentUsers[convo.otherUser.id] = true;
+    // });
 
-    const newState = [...conversations];
-    users.forEach((user) => {
-      // only create a fake convo if we don't already have a convo with this user
-      if (!currentUsers[user.id]) {
-        let fakeConvo = { otherUser: user, messages: [] };
-        newState.push(fakeConvo);
-      }
-    });
+    // const newState = [...conversations];
+    // users.forEach((user) => {
+    //   // only create a fake convo if we don't already have a convo with this user
+    //   if (!currentUsers[user.id]) {
+    //     let fakeConvo = { otherUser: user, messages: [] };
+    //     newState.push(fakeConvo);
+    //   }
+    // });
 
-    setConversations(newState);
+    // setConversations(newState);
   };
 
   const clearSearchedUsers = () => {
@@ -114,15 +114,15 @@ const Home = ({ user, logout }) => {
   const addNewConvo = useCallback(
     (recipientId, message) => {
       setConversations((prev) => prev.map((convo) => {
-        if (convo.otherUser.id === recipientId) {
-          const convoCopy = { ...convo };
-          convoCopy.messages = [...convoCopy.messages, message];
-          convoCopy.latestMessageText = message.text;
-          convoCopy.id = message.conversationId;
-          return convoCopy;
-        } else {
-          return convo;
-        }
+        // if (convo.otherUser.id === recipientId) {
+        //   const convoCopy = { ...convo };
+        //   convoCopy.messages = [...convoCopy.messages, message];
+        //   convoCopy.latestMessageText = message.text;
+        //   convoCopy.id = message.conversationId;
+        //   return convoCopy;
+        // } else {
+        //   return convo;
+        // }
       }));
     },
     [setConversations]
@@ -164,13 +164,13 @@ const Home = ({ user, logout }) => {
   const addOnlineUser = useCallback((id) => {
     setConversations((prev) =>
       prev.map((convo) => {
-        if (convo.otherUser.id === id) {
-          const convoCopy = { ...convo };
-          convoCopy.otherUser = { ...convoCopy.otherUser, online: true };
-          return convoCopy;
-        } else {
-          return convo;
-        }
+        // if (convo.otherUser.id === id) {
+        //   const convoCopy = { ...convo };
+        //   convoCopy.otherUser = { ...convoCopy.otherUser, online: true };
+        //   return convoCopy;
+        // } else {
+        //   return convo;
+        // }
       })
     );
   }, []);
@@ -178,13 +178,13 @@ const Home = ({ user, logout }) => {
   const removeOfflineUser = useCallback((id) => {
     setConversations((prev) =>
       prev.map((convo) => {
-        if (convo.otherUser.id === id) {
-          const convoCopy = { ...convo };
-          convoCopy.otherUser = { ...convoCopy.otherUser, online: false };
-          return convoCopy;
-        } else {
-          return convo;
-        }
+        // if (convo.otherUser.id === id) {
+        //   const convoCopy = { ...convo };
+        //   convoCopy.otherUser = { ...convoCopy.otherUser, online: false };
+        //   return convoCopy;
+        // } else {
+        //   return convo;
+        // }
       })
     );
   }, []);
@@ -225,6 +225,7 @@ const Home = ({ user, logout }) => {
     const fetchConversations = async () => {
       try {
         const { data } = await axios.get('/api/conversations');
+
         setConversations(data);
       } catch (error) {
         console.error(error);

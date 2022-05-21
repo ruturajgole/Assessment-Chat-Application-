@@ -12,38 +12,11 @@ router.get("/", async (req, res, next) => {
     }
     const userId = req.user.id;
     const conversations = await Conversation.findAll({
-      where: {
-        [Op.or]: {
-          user1Id: userId,
-          user2Id: userId,
-        },
-      },
       attributes: ["id", "lastMessageSeen"],
       order: [[Message, "createdAt", "DESC"]],
       include: [
+        { model: User, as: "users"},
         { model: Message, order: ["createdAt", "DESC"] },
-        {
-          model: User,
-          as: "user1",
-          where: {
-            id: {
-              [Op.not]: userId,
-            },
-          },
-          attributes: ["id", "username", "photoUrl"],
-          required: false,
-        },
-        {
-          model: User,
-          as: "user2",
-          where: {
-            id: {
-              [Op.not]: userId,
-            },
-          },
-          attributes: ["id", "username", "photoUrl"],
-          required: false,
-        },
       ],
     });
 
@@ -51,21 +24,11 @@ router.get("/", async (req, res, next) => {
       const convo = conversations[i];
       const convoJSON = convo.toJSON();
 
-      // set a property "otherUser" so that frontend will have easier access
-      if (convoJSON.user1) {
-        convoJSON.otherUser = convoJSON.user1;
-        delete convoJSON.user1;
-      } else if (convoJSON.user2) {
-        convoJSON.otherUser = convoJSON.user2;
-        delete convoJSON.user2;
-      }
+      convoJSON.otherUsers = convoJSON.users.filter((user) => user.id !== userId);
 
-      // set property for online status of the other user
-      if (onlineUsers.includes(convoJSON.otherUser.id)) {
-        convoJSON.otherUser.online = true;
-      } else {
-        convoJSON.otherUser.online = false;
-      }
+      convoJSON.otherUsers.forEach((user) => {
+        user.online = onlineUsers.includes(user.id);
+      });
 
       // set properties for notification count and latest message preview
       convoJSON.latestMessageText = convoJSON.messages[0].text;
